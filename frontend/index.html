@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailNext Smart Stylist - AI Fashion Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="header-content">
+                <div class="logo-brand">
+                    <div class="logo-icon">
+                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                            <!-- Modern rounded square background -->
+                            <rect x="2" y="2" width="40" height="40" rx="12" fill="url(#logoGradient2)"/>
+                            <!-- Stylized hanger/fashion icon -->
+                            <path d="M22 10C20.34 10 19 11.34 19 13C19 14.12 19.62 15.08 20.5 15.58L14 22L16 24L21 19V32H23V19L28 24L30 22L23.5 15.58C24.38 15.08 25 14.12 25 13C25 11.34 23.66 10 22 10Z" fill="white" fill-opacity="0.95"/>
+                            <!-- AI sparkle accent -->
+                            <circle cx="32" cy="12" r="3" fill="white" fill-opacity="0.9"/>
+                            <circle cx="32" cy="12" r="1.5" fill="url(#sparkleGradient)"/>
+                            <defs>
+                                <linearGradient id="logoGradient2" x1="0" y1="0" x2="44" y2="44">
+                                    <stop offset="0%" stop-color="#667eea"/>
+                                    <stop offset="50%" stop-color="#7c3aed"/>
+                                    <stop offset="100%" stop-color="#764ba2"/>
+                                </linearGradient>
+                                <linearGradient id="sparkleGradient" x1="30" y1="10" x2="34" y2="14">
+                                    <stop offset="0%" stop-color="#fbbf24"/>
+                                    <stop offset="100%" stop-color="#f59e0b"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>RetailNext</h1>
+                        <p>AI Fashion Stylist</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="status-pill">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Connecting...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main">
+        <div class="container-fluid">
+            <div class="grid-layout">
+                <!-- Chat Section -->
+                <section class="chat-section">
+                    <div class="chat-container">
+                        <!-- Welcome Hero -->
+                        <div class="welcome-hero" id="welcomeHero">
+                            <h2>Welcome to Your Personal AI Stylist</h2>
+                            <p>Tell me about your event, show me what you're wearing, or simply speak - I'll help you create the perfect look</p>
+                            <div class="feature-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon">👁️</div>
+                                    <span>Vision AI</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">🎤</div>
+                                    <span>Voice Enabled</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">🔍</div>
+                                    <span>Smart Search</span>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">✨</div>
+                                    <span>Instant Styling</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Messages -->
+                        <div class="messages-container" id="messagesContainer">
+                            <!-- Messages will be inserted here -->
+                        </div>
+
+                        <!-- Input Area -->
+                        <div class="input-area">
+                            <!-- Image Preview -->
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" alt="Preview">
+                                <button class="remove-btn" id="removeImageBtn">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Input Controls -->
+                            <div class="input-controls">
+                                <button class="action-btn" id="uploadBtn" title="Upload image">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
+                                    </svg>
+                                </button>
+
+                                <button class="action-btn mic-btn" id="micBtn" title="Voice input">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" id="micIcon">
+                                        <path d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"/>
+                                    </svg>
+                                    <div class="recording-pulse" id="recordingPulse" style="display: none;"></div>
+                                </button>
+
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+                                <textarea
+                                    id="messageInput"
+                                    placeholder="Describe what you're looking for... (e.g., 'I need an outfit for graduation')"
+                                    rows="1"></textarea>
+
+                                <button class="send-btn" id="sendBtn">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Recording Status -->
+                            <div class="recording-status" id="recordingStatus" style="display: none;">
+                                <div class="recording-timer" id="recordingTimer">00:00</div>
+                                <button class="cancel-btn" id="cancelRecordingBtn">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recommendations Section -->
+                <section class="recommendations-section">
+                    <div class="section-header">
+                        <h3>Your Personalized Recommendations</h3>
+                        <button class="text-btn" id="clearBtn">Clear All</button>
+                    </div>
+
+                    <!-- Event Context -->
+                    <div class="event-context-card" id="eventContextCard" style="display: none;">
+                        <h4>Event Details</h4>
+                        <div id="eventContextContent"></div>
+                    </div>
+
+                    <!-- Products Grid -->
+                    <div class="products-grid" id="productsGrid">
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                                    <circle cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="2"/>
+                                    <path d="M50 30v40M30 50h40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3>Start Your Style Journey</h3>
+                            <p>Ask me about your event and I'll show you personalized recommendations with real product images</p>
+                        </div>
+                    </div>
+
+                    <!-- Outfit Summary -->
+                    <div class="outfit-summary" id="outfitSummary" style="display: none;">
+                        <div class="summary-stats">
+                            <div class="stat">
+                                <span class="stat-label">Items</span>
+                                <span class="stat-value" id="totalItems">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Total</span>
+                                <span class="stat-value" id="totalPrice">$0</span>
+                            </div>
+                        </div>
+                        <button class="view-outfit-btn" id="viewOutfitBtn">View Complete Outfit</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Product Detail Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-container">
+            <button class="modal-close-btn" id="closeModalBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M6 6l12 12M18 6L6 18" stroke-width="2"/>
+                </svg>
+            </button>
+            <div class="modal-content" id="modalContent">
+                <!-- Product details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Audio Player (hidden) -->
+    <audio id="audioPlayer" style="display: none;"></audio>
+
+    <script src="app.js"></script>
+</body>
+</html>

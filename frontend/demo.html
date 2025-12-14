@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailNext Demo Helper</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .demo-card p {
+            color: var(--gray-600);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .demo-card button {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .demo-card button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .status-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-badge.error {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .result-box {
+            background: var(--gray-50);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="8" fill="#6366F1"/>
+                        <path d="M20 10L12 18H16V30H24V18H28L20 10Z" fill="white"/>
+                    </svg>
+                    <div>
+                        <h1>RetailNext Demo Helper</h1>
+                        <p class="tagline">API Testing & Verification</p>
+                    </div>
+                </div>
+                <a href="index.html" class="btn-primary">Go to Main App</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="demo-container">
+        <!-- API Status -->
+        <div class="status-section">
+            <h2 style="margin-bottom: 1rem; color: var(--gray-900);">API Status</h2>
+            <div class="status-item">
+                <span>Backend Server</span>
+                <span class="status-badge" id="backendStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span>OpenAI Connection</span>
+                <span class="status-badge" id="openaiStatus">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span>Demo Mode</span>
+                <span class="status-badge" id="demoModeStatus">Unknown</span>
+            </div>
+            <div class="status-item">
+                <span>Inventory Count</span>
+                <span id="inventoryCount">-</span>
+            </div>
+        </div>
+
+        <h2 style="color: var(--gray-900); margin-bottom: 1rem;">Quick API Tests</h2>
+
+        <div class="demo-grid">
+            <!-- Event Parsing Test -->
+            <div class="demo-card">
+                <h3>Event Context Parsing</h3>
+                <p>Test structured output extraction from natural language</p>
+                <button onclick="testEventParsing()">Test Event Parsing</button>
+                <div class="result-box" id="eventResult"></div>
+            </div>
+
+            <!-- Semantic Search Test -->
+            <div class="demo-card">
+                <h3>Semantic Search</h3>
+                <p>Test AI-powered product search with embeddings</p>
+                <button onclick="testSemanticSearch()">Test Semantic Search</button>
+                <div class="result-box" id="searchResult"></div>
+            </div>
+
+            <!-- Outfit Bundle Test -->
+            <div class="demo-card">
+                <h3>Outfit Bundle</h3>
+                <p>Test complete outfit recommendation generation</p>
+                <button onclick="testOutfitBundle()">Test Outfit Bundle</button>
+                <div class="result-box" id="bundleResult"></div>
+            </div>
+
+            <!-- Text-to-Speech Test -->
+            <div class="demo-card">
+                <h3>Text-to-Speech</h3>
+                <p>Test Australian-accented voice output</p>
+                <button onclick="testTTS()">Test TTS (Australian)</button>
+                <div class="result-box" id="ttsResult"></div>
+            </div>
+
+            <!-- Full Chat Test -->
+            <div class="demo-card">
+                <h3>Complete Chat Flow</h3>
+                <p>Test full conversation with all APIs</p>
+                <button onclick="testFullChat()">Test Full Chat</button>
+                <div class="result-box" id="chatResult"></div>
+            </div>
+
+            <!-- Inventory Test -->
+            <div class="demo-card">
+                <h3>Inventory Check</h3>
+                <p>Test inventory search and filtering</p>
+                <button onclick="testInventory()">Test Inventory</button>
+                <div class="result-box" id="inventoryResult"></div>
+            </div>
+        </div>
+
+        <!-- Sample Queries -->
+        <div style="margin-top: 3rem;">
+            <h2 style="color: var(--gray-900); margin-bottom: 1rem;">Sample Demo Queries</h2>
+            <div class="status-section">
+                <div class="status-item">
+                    <span style="flex: 1;">"I need an outfit for my daughter's graduation next Saturday. It's outdoors and I want something elegant but comfortable."</span>
+                    <span class="status-badge success">Graduation</span>
+                </div>
+                <div class="status-item">
+                    <span style="flex: 1;">"I have a job interview at a tech company. Help me look professional but not too stuffy."</span>
+                    <span class="status-badge success">Interview</span>
+                </div>
+                <div class="status-item">
+                    <span style="flex: 1;">"What should I wear to a beach wedding next month?"</span>
+                    <span class="status-badge success">Wedding</span>
+                </div>
+                <div class="status-item">
+                    <span style="flex: 1;">"Find me something similar to a cashmere sweater in navy, budget around $150."</span>
+                    <span class="status-badge success">Semantic Search</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+
+        // Check API status on load
+        window.addEventListener('DOMContentLoaded', checkStatus);
+
+        async function checkStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+
+                document.getElementById('backendStatus').textContent = 'Online';
+                document.getElementById('backendStatus').className = 'status-badge success';
+
+                document.getElementById('openaiStatus').textContent = data.openai_connected ? 'Connected' : 'Disconnected';
+                document.getElementById('openaiStatus').className = `status-badge ${data.openai_connected ? 'success' : 'error'}`;
+
+                document.getElementById('demoModeStatus').textContent = data.demo_mode ? 'Enabled' : 'Disabled';
+                document.getElementById('demoModeStatus').className = `status-badge ${data.demo_mode ? 'error' : 'success'}`;
+
+                document.getElementById('inventoryCount').textContent = data.inventory_count || '-';
+
+            } catch (error) {
+                document.getElementById('backendStatus').textContent = 'Offline';
+                document.getElementById('backendStatus').className = 'status-badge error';
+            }
+        }
+
+        async function testEventParsing() {
+            const resultBox = document.getElementById('eventResult');
+            resultBox.textContent = 'Testing...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/parse-event`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_input: "I need an outfit for my daughter's graduation next Saturday. It's outdoors and I want something elegant but comfortable."
+                    })
+                });
+
+                const data = await response.json();
+                resultBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testSemanticSearch() {
+            const resultBox = document.getElementById('searchResult');
+            resultBox.textContent = 'Testing...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/inventory/semantic-search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        description: "elegant silk top for formal dinner",
+                        gender: "women",
+                        max_price: 200
+                    })
+                });
+
+                const data = await response.json();
+                resultBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testOutfitBundle() {
+            const resultBox = document.getElementById('bundleResult');
+            resultBox.textContent = 'Testing...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/outfit-bundle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        occasion: "graduation ceremony",
+                        gender: "women",
+                        formality: "smart-casual"
+                    })
+                });
+
+                const data = await response.json();
+                resultBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testTTS() {
+            const resultBox = document.getElementById('ttsResult');
+            resultBox.textContent = 'Generating speech...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/tts/base64`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: "G'day! I'm your AI fashion stylist. How can I help you find the perfect outfit today?",
+                        use_australian_accent: true
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.audio_base64) {
+                    resultBox.textContent = 'Audio generated! Playing...';
+                    const audio = new Audio(`data:audio/mp3;base64,${data.audio_base64}`);
+                    audio.play();
+                } else {
+                    resultBox.textContent = 'TTS unavailable (Demo mode or API issue)';
+                }
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testFullChat() {
+            const resultBox = document.getElementById('chatResult');
+            resultBox.textContent = 'Processing chat...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "I need an elegant outfit for a graduation ceremony",
+                        return_audio: false
+                    })
+                });
+
+                const data = await response.json();
+                resultBox.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function testInventory() {
+            const resultBox = document.getElementById('inventoryResult');
+            resultBox.textContent = 'Fetching inventory...';
+            resultBox.classList.add('show');
+
+            try {
+                const response = await fetch(`${API_BASE}/inventory?gender=women`);
+                const data = await response.json();
+                resultBox.textContent = `Found ${data.total_count} items\n\n` + JSON.stringify(data.items.slice(0, 3), null, 2);
+            } catch (error) {
+                resultBox.textContent = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

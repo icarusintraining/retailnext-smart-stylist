@@ -1,0 +1,29 @@
+# RetailNext Smart Stylist - Python Dependencies
+# Install: pip install -r requirements.txt
+
+# OpenAI SDK (latest version with GPT-5 support)
+openai>=1.50.0
+
+# FastAPI Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+
+# Request handling
+python-multipart>=0.0.6
+pydantic>=2.5.0
+
+# HTTP Client (for testing)
+httpx>=0.26.0
+requests>=2.31.0
+
+# Development & Testing
+pytest>=7.4.0
+pytest-asyncio>=0.23.0
+
+# Data Processing (for RAG implementation)
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Optional: For local audio processing tests
+# soundfile>=0.12.0
+# pydub>=0.25.1
