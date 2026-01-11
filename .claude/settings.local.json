@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(curl:*)",
-      "WebFetch(domain:www.howmuchto.com.au)"
+      "WebFetch(domain:www.howmuchto.com.au)",
+      "WebFetch(domain:platform.openai.com)",
+      "WebSearch"
     ]
   }
 }

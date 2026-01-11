@@ -6,7 +6,7 @@
     <title>RetailNext Smart Stylist - AI Fashion Assistant</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,36 +17,20 @@
         <div class="gradient-orb orb-3"></div>
     </div>
 
-    <!-- Header -->
+    <!-- Header - Minimal Editorial -->
     <header class="header">
         <div class="container-fluid">
             <div class="header-content">
                 <div class="logo-brand">
                     <div class="logo-icon">
-                        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-                            <!-- Modern rounded square background -->
-                            <rect x="2" y="2" width="40" height="40" rx="12" fill="url(#logoGradient2)"/>
-                            <!-- Stylized hanger/fashion icon -->
-                            <path d="M22 10C20.34 10 19 11.34 19 13C19 14.12 19.62 15.08 20.5 15.58L14 22L16 24L21 19V32H23V19L28 24L30 22L23.5 15.58C24.38 15.08 25 14.12 25 13C25 11.34 23.66 10 22 10Z" fill="white" fill-opacity="0.95"/>
-                            <!-- AI sparkle accent -->
-                            <circle cx="32" cy="12" r="3" fill="white" fill-opacity="0.9"/>
-                            <circle cx="32" cy="12" r="1.5" fill="url(#sparkleGradient)"/>
-                            <defs>
-                                <linearGradient id="logoGradient2" x1="0" y1="0" x2="44" y2="44">
-                                    <stop offset="0%" stop-color="#667eea"/>
-                                    <stop offset="50%" stop-color="#7c3aed"/>
-                                    <stop offset="100%" stop-color="#764ba2"/>
-                                </linearGradient>
-                                <linearGradient id="sparkleGradient" x1="30" y1="10" x2="34" y2="14">
-                                    <stop offset="0%" stop-color="#fbbf24"/>
-                                    <stop offset="100%" stop-color="#f59e0b"/>
-                                </linearGradient>
-                            </defs>
+                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                            <rect x="2" y="2" width="32" height="32" rx="8" fill="#4A148C"/>
+                            <path d="M18 8C16.67 8 15.6 9.07 15.6 10.4C15.6 11.3 16.1 12.07 16.8 12.47L11.6 17.6L13.2 19.2L17.2 15.2V26H18.8V15.2L22.8 19.2L24.4 17.6L19.2 12.47C19.9 12.07 20.4 11.3 20.4 10.4C20.4 9.07 19.33 8 18 8Z" fill="white"/>
                         </svg>
                     </div>
                     <div class="brand-text">
                         <h1>RetailNext</h1>
-                        <p>AI Fashion Stylist</p>
+                        <p>Smart Stylist</p>
                     </div>
                 </div>
                 <div class="header-actions">
@@ -66,25 +50,25 @@
                 <!-- Chat Section -->
                 <section class="chat-section">
                     <div class="chat-container">
-                        <!-- Welcome Hero -->
+                        <!-- Welcome Hero - Editorial -->
                         <div class="welcome-hero" id="welcomeHero">
                             <h2>Welcome to Your Personal AI Stylist</h2>
-                            <p>Tell me about your event, show me what you're wearing, or simply speak - I'll help you create the perfect look</p>
+                            <p>Tell me about your event, show me what you're wearing, or simply speak - I'll help you create the perfect look.</p>
                             <div class="feature-grid">
-                                <div class="feature-item">
-                                    <div class="feature-icon">👁️</div>
+                                <div class="feature-item" data-feature="vision">
+                                    <span class="feature-icon">👁️</span>
                                     <span>Vision AI</span>
                                 </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon">🎤</div>
-                                    <span>Voice Enabled</span>
+                                <div class="feature-item" data-feature="voice">
+                                    <span class="feature-icon">🎤</span>
+                                    <span>Voice</span>
                                 </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon">🔍</div>
+                                <div class="feature-item" data-feature="search">
+                                    <span class="feature-icon">🔍</span>
                                     <span>Smart Search</span>
                                 </div>
-                                <div class="feature-item">
-                                    <div class="feature-icon">✨</div>
+                                <div class="feature-item" data-feature="style">
+                                    <span class="feature-icon">✨</span>
                                     <span>Instant Styling</span>
                                 </div>
                             </div>
@@ -95,7 +79,7 @@
                             <!-- Messages will be inserted here -->
                         </div>
 
-                        <!-- Input Area -->
+                        <!-- Input Area - Floating Pill -->
                         <div class="input-area">
                             <!-- Image Preview -->
                             <div class="image-preview" id="imagePreview" style="display: none;">
@@ -109,6 +93,11 @@
 
                             <!-- Input Controls -->
                             <div class="input-controls">
+                                <textarea
+                                    id="messageInput"
+                                    placeholder="Describe what you're looking for..."
+                                    rows="1"></textarea>
+
                                 <button class="action-btn" id="uploadBtn" title="Upload image">
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"/>
@@ -119,18 +108,12 @@
                                     <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" id="micIcon">
                                         <path d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"/>
                                     </svg>
-                                    <div class="recording-pulse" id="recordingPulse" style="display: none;"></div>
                                 </button>
 
                                 <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
-                                <textarea
-                                    id="messageInput"
-                                    placeholder="Describe what you're looking for... (e.g., 'I need an outfit for graduation')"
-                                    rows="1"></textarea>
-
                                 <button class="send-btn" id="sendBtn">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
                                     </svg>
                                 </button>
@@ -148,8 +131,8 @@
                 <!-- Recommendations Section -->
                 <section class="recommendations-section">
                     <div class="section-header">
-                        <h3>Your Personalized Recommendations</h3>
-                        <button class="text-btn" id="clearBtn">Clear All</button>
+                        <h3>Curated For You</h3>
+                        <button class="text-btn" id="clearBtn">Clear</button>
                     </div>
 
                     <!-- Event Context -->
@@ -160,15 +143,84 @@
 
                     <!-- Products Grid -->
                     <div class="products-grid" id="productsGrid">
-                        <div class="empty-state">
-                            <div class="empty-icon">
-                                <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-                                    <circle cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="2"/>
-                                    <path d="M50 30v40M30 50h40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
+                        <!-- Trending Now - Active Empty State -->
+                        <div class="trending-grid" id="trendingGrid">
+                            <div class="trending-header">
+                                <h4>Trending Now</h4>
+                                <span>This Season</span>
                             </div>
-                            <h3>Start Your Style Journey</h3>
-                            <p>Ask me about your event and I'll show you personalized recommendations with real product images</p>
+                            <div class="trending-items" id="trendingItems">
+                                <!-- Placeholder trending items -->
+                                <div class="product-card trending-placeholder" style="--card-index: 0;">
+                                    <div class="product-image-container">
+                                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);display:flex;align-items:center;justify-content:center;color:#bdbdbd;">
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                <path d="M21 15l-5-5L5 21"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-name" style="background:#e0e0e0;height:14px;border-radius:4px;width:80%;"></div>
+                                        <div class="product-meta" style="margin-top:8px;">
+                                            <div style="background:#e0e0e0;height:12px;border-radius:4px;width:40%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-card trending-placeholder" style="--card-index: 1;">
+                                    <div class="product-image-container">
+                                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);display:flex;align-items:center;justify-content:center;color:#bdbdbd;">
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                <path d="M21 15l-5-5L5 21"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-name" style="background:#e0e0e0;height:14px;border-radius:4px;width:70%;"></div>
+                                        <div class="product-meta" style="margin-top:8px;">
+                                            <div style="background:#e0e0e0;height:12px;border-radius:4px;width:50%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-card trending-placeholder" style="--card-index: 2;">
+                                    <div class="product-image-container">
+                                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);display:flex;align-items:center;justify-content:center;color:#bdbdbd;">
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                <path d="M21 15l-5-5L5 21"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-name" style="background:#e0e0e0;height:14px;border-radius:4px;width:90%;"></div>
+                                        <div class="product-meta" style="margin-top:8px;">
+                                            <div style="background:#e0e0e0;height:12px;border-radius:4px;width:35%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-card trending-placeholder" style="--card-index: 3;">
+                                    <div class="product-image-container">
+                                        <div style="width:100%;height:100%;background:linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);display:flex;align-items:center;justify-content:center;color:#bdbdbd;">
+                                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                <path d="M21 15l-5-5L5 21"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-name" style="background:#e0e0e0;height:14px;border-radius:4px;width:60%;"></div>
+                                        <div class="product-meta" style="margin-top:8px;">
+                                            <div style="background:#e0e0e0;height:12px;border-radius:4px;width:45%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p style="text-align:center;font-size:0.8125rem;color:#999;margin-top:1rem;">Ask me about your style preferences to see personalized recommendations</p>
                         </div>
                     </div>
 
@@ -196,8 +248,8 @@
         <div class="modal-overlay" id="modalOverlay"></div>
         <div class="modal-container">
             <button class="modal-close-btn" id="closeModalBtn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M6 6l12 12M18 6L6 18" stroke-width="2"/>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 6l12 12M18 6L6 18"/>
                 </svg>
             </button>
             <div class="modal-content" id="modalContent">

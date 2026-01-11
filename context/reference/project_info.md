@@ -1,6 +1,6 @@
 
-Prompt
-You are selling to a Fortune 1000 clothing retailer, RetailNext, that operates a vast network of department stores. RetailNext is aiming to leverage advanced AI technologies to enhance customer experience, streamline operations, and gain a competitive edge in the market. Your task is to develop and demonstrate a technical solution that showcases how this technology can be applied to solve real-world problems within the organization.
+Original Prompt for this project:
+You are selling to a Fortune 1000's creation clothing retailer, RetailNext, that operates a vast network of department stores. RetailNext is aiming to leverage advanced AI technologies to enhance customer experience, streamline operations, and gain a competitive edge in the market. Your task is to develop and demonstrate a technical solution that showcases how this technology can be applied to solve real-world problems within the organization.
  
 Assume that you have had a meeting with your Account Director and champion from RetailNext to prepare for your meeting with their Head of Innovation and CTO. They have highlighted customers recently leaving poor reviews due to inability to find updated styles or specific items in stores for upcoming events.
  

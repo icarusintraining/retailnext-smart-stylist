@@ -489,6 +489,52 @@ async def get_inventory(
         logger.error(f"Inventory error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
+
+@app.get("/api/trending")
+async def get_trending(limit: int = 6):
+    """Get trending/featured products for the homepage"""
+    try:
+        # Sample random products to simulate trending items
+        df = STYLES_DF.sample(n=min(limit, len(STYLES_DF)))
+        items = df.to_dict('records')
+
+        # Use the same image base URL as clothing_rag.py
+        IMAGE_BASE_URL = "https://raw.githubusercontent.com/openai/openai-cookbook/main/examples/data/sample_clothes/sample_images"
+
+        enriched_items = []
+        for item in items:
+            item_id = str(item.get('id', ''))
+            enriched_items.append({
+                "id": item_id,
+                "productDisplayName": item.get('productDisplayName', 'Fashion Item'),
+                "articleType": item.get('articleType', 'Apparel'),
+                "baseColour": item.get('baseColour', 'Multi'),
+                "season": item.get('season', 'All Season'),
+                "gender": item.get('gender', 'Unisex'),
+                "usage": item.get('usage', 'Casual'),
+                "price": int(item_id) % 200 + 30 if item_id.isdigit() else 65,
+                "imageUrl": f"{IMAGE_BASE_URL}/{item_id}.jpg",
+                "storeLocation": {
+                    "aisle": f"Aisle {chr(65 + int(item_id) % 6)}" if item_id.isdigit() else "Aisle A",
+                    "rack": f"Rack {int(item_id) % 20 + 1}" if item_id.isdigit() else "Rack 1",
+                    "display": f"Aisle {chr(65 + int(item_id) % 6)}, Rack {int(item_id) % 20 + 1}" if item_id.isdigit() else "Aisle A, Rack 1"
+                },
+                "stock": {
+                    "status": "in_stock",
+                    "label": "In Stock",
+                    "quantity": int(item_id) % 50 + 5 if item_id.isdigit() else 10
+                }
+            })
+
+        return {
+            "items": enriched_items,
+            "count": len(enriched_items)
+        }
+
+    except Exception as e:
+        logger.error(f"Trending error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ============================================================================
 # STARTUP
 # ============================================================================
@@ -510,5 +556,5 @@ async def startup_event():
 if __name__ == "__main__":
     import uvicorn
 
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 8001))
     uvicorn.run(app, host="0.0.0.0", port=port)

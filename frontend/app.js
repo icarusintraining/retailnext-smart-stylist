@@ -4,7 +4,7 @@
 // ============================================================================
 
 // Configuration
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://localhost:8001';
 const ENABLE_AUDIO_RESPONSES = true;
 
 // ============================================================================
@@ -32,13 +32,14 @@ const state = {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('%c🛍️ RetailNext Smart Stylist V2', 'color: #667eea; font-size: 20px; font-weight: bold;');
-    console.log('%cUsing real clothing data with RAG implementation', 'color: #10b981; font-size: 14px;');
+    console.log('%c🛍️ RetailNext Smart Stylist', 'color: #4A148C; font-size: 20px; font-weight: bold;');
+    console.log('%cEditorial Luxury UI - Executive Demo Ready', 'color: #10b981; font-size: 14px;');
 
     initializeApp();
     checkAPIConnection();
     setupEventListeners();
     addWelcomeMessage();
+    loadTrendingProducts();
 });
 
 async function initializeApp() {
@@ -307,12 +308,10 @@ function addTypingIndicator() {
     typingDiv.id = id;
     typingDiv.className = 'message assistant';
     typingDiv.innerHTML = `
-        <div class="message-bubble">
-            <div style="display: flex; gap: 6px; align-items: center;">
-                <div style="width: 8px; height: 8px; background: var(--gray-400); border-radius: 50%; animation: typing 1.4s infinite;"></div>
-                <div style="width: 8px; height: 8px; background: var(--gray-400); border-radius: 50%; animation: typing 1.4s infinite 0.2s;"></div>
-                <div style="width: 8px; height: 8px; background: var(--gray-400); border-radius: 50%; animation: typing 1.4s infinite 0.4s;"></div>
-            </div>
+        <div class="typing-indicator">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
         </div>
     `;
 
@@ -350,7 +349,7 @@ function formatText(text) {
     formatted = formatted.replace(/\n/g, '<br>');
 
     // Price formatting
-    formatted = formatted.replace(/\$(\d+)/g, '<span style="color: var(--primary); font-weight: 700;">$$1</span>');
+    formatted = formatted.replace(/\$(\d+)/g, '<span style="color: var(--brand-accent); font-weight: 600;">$$1</span>');
 
     return formatted;
 }
@@ -616,7 +615,16 @@ function displayEventContext(context) {
 
 function displayRecommendedItems(items) {
     const grid = document.getElementById('productsGrid');
-    grid.innerHTML = ''; // Clear existing
+
+    // Hide the trending grid
+    const trendingGrid = document.getElementById('trendingGrid');
+    if (trendingGrid) {
+        trendingGrid.style.display = 'none';
+    }
+
+    // Clear any existing product cards (but not the trending grid)
+    const existingCards = grid.querySelectorAll('.product-card:not(.trending-placeholder)');
+    existingCards.forEach(card => card.remove());
 
     state.recommendedItems = items;
 
@@ -631,7 +639,7 @@ function displayRecommendedItems(items) {
 function createProductCard(item, index) {
     const card = document.createElement('div');
     card.className = 'product-card';
-    card.style.animationDelay = `${index * 0.03}s`;
+    card.style.setProperty('--card-index', index);
 
     // Get price from enriched data
     const price = item.price || 65;
@@ -656,29 +664,28 @@ function createProductCard(item, index) {
             <img src="${imageUrl}"
                  alt="${escapeHtml(item.productDisplayName)}"
                  class="product-image"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23f3f4f6%22 width=%2280%22 height=%2280%22/><text x=%2240%22 y=%2245%22 font-size=%2210%22 text-anchor=%22middle%22 fill=%22%239ca3af%22>No image</text></svg>'"
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23f5f5f5%22 width=%2280%22 height=%2280%22/><text x=%2240%22 y=%2245%22 font-size=%228%22 text-anchor=%22middle%22 fill=%22%23bdbdbd%22>No image</text></svg>'"
                  loading="lazy">
+            <div class="product-actions">
+                <button class="add-to-bag-btn" onclick="event.stopPropagation(); alert('Added to bag!')">Add to Bag</button>
+            </div>
         </div>
         <div class="product-details">
-            <div>
-                <h4 class="product-name">${escapeHtml(item.productDisplayName)}</h4>
-                <div class="product-meta">
-                    <span class="product-price">$${price}</span>
-                    <span class="product-category">${escapeHtml(item.articleType)}</span>
-                </div>
+            <h4 class="product-name">${escapeHtml(item.productDisplayName)}</h4>
+            <div class="product-meta">
+                <span class="product-price">$${price}</span>
+                <span class="product-category">${escapeHtml(item.articleType)}</span>
             </div>
-            <div>
-                <div class="product-location">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    <span>${escapeHtml(location)}</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                    <span class="stock-indicator ${stockClass}">${escapeHtml(stock.label)}</span>
-                    ${matchPercent ? `<span class="match-badge">${matchPercent}% match</span>` : ''}
-                </div>
+            <div class="product-location">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>${escapeHtml(location)}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                <span class="stock-indicator ${stockClass}">${escapeHtml(stock.label)}</span>
+                ${matchPercent ? `<span class="match-badge">${matchPercent}%</span>` : ''}
             </div>
         </div>
     `;
@@ -716,18 +723,17 @@ function clearRecommendations() {
     state.recommendedItems = [];
 
     const grid = document.getElementById('productsGrid');
-    grid.innerHTML = `
-        <div class="empty-state">
-            <div class="empty-icon">
-                <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-                    <circle cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="2"/>
-                    <path d="M50 30v40M30 50h40" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <h3>Start Your Style Journey</h3>
-            <p>Ask me about your event and I'll show you personalized recommendations with real product images</p>
-        </div>
-    `;
+
+    // Remove only the product cards (not trending placeholders)
+    const productCards = grid.querySelectorAll('.product-card:not(.trending-placeholder)');
+    productCards.forEach(card => card.remove());
+
+    // Show the trending grid again and reload trending products
+    const trendingGrid = document.getElementById('trendingGrid');
+    if (trendingGrid) {
+        trendingGrid.style.display = 'block';
+        loadTrendingProducts(); // Refresh with new trending items
+    }
 
     document.getElementById('eventContextCard').style.display = 'none';
     updateOutfitSummary();
@@ -758,14 +764,14 @@ function showProductModal(item, price, imageUrl) {
 
         <h2 class="modal-product-name">${escapeHtml(item.productDisplayName)}</h2>
 
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <div class="modal-badges">
             <div class="modal-product-price">$${price}</div>
-            <span class="stock-indicator ${stockClass}" style="font-size: 0.75rem;">${escapeHtml(stock.label)}</span>
-            ${item.similarity_score ? `<span class="match-badge" style="font-size: 0.75rem;">${Math.round(item.similarity_score * 100)}% match</span>` : ''}
+            <span class="stock-indicator ${stockClass}">${escapeHtml(stock.label)}</span>
+            ${item.similarity_score ? `<span class="match-badge">${Math.round(item.similarity_score * 100)}% match</span>` : ''}
         </div>
 
-        <!-- Store Location - KEY VALUE PROPOSITION -->
-        <div class="modal-location-card" style="margin-bottom: 1rem;">
+        <!-- Store Location -->
+        <div class="modal-location-card">
             <div class="modal-location-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -798,26 +804,23 @@ function showProductModal(item, price, imageUrl) {
             </div>
         </div>
 
-        <!-- Perfect For Section - UPSELLING CONTEXT -->
-        <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--gray-50); border-radius: 0.5rem;">
-            <div style="font-size: 0.6875rem; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.5rem;">Perfect for</div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                ${context.perfectFor.map(occ => `<span style="padding: 0.25rem 0.5rem; background: var(--white); border: 1px solid var(--gray-200); border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500;">${escapeHtml(occ)}</span>`).join('')}
+        <!-- Perfect For Section -->
+        <div class="modal-perfect-for">
+            <h5>Perfect for</h5>
+            <div class="occasion-tags">
+                ${context.perfectFor.map(occ => `<span class="occasion-tag">${escapeHtml(occ)}</span>`).join('')}
             </div>
         </div>
 
-        <!-- Pairs Well With - CROSS-SELL -->
-        <div style="margin-bottom: 1.25rem; padding: 0.75rem; background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%); border-radius: 0.5rem; border: 1px dashed var(--primary);">
-            <div style="font-size: 0.6875rem; color: var(--primary); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.5rem; font-weight: 600;">Complete the look</div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                ${context.pairsWellWith.map(pair => `<span style="padding: 0.25rem 0.5rem; background: var(--white); border: 1px solid var(--primary); border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; color: var(--primary);">+ ${escapeHtml(pair)}</span>`).join('')}
+        <!-- Complete the Look -->
+        <div class="modal-complete-look">
+            <h5>Complete the look</h5>
+            <div class="occasion-tags">
+                ${context.pairsWellWith.map(pair => `<span class="occasion-tag" style="border: 1px solid var(--brand-highlight); color: var(--brand-accent);">+ ${escapeHtml(pair)}</span>`).join('')}
             </div>
         </div>
 
-        <button style="width: 100%; padding: 0.875rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; border: none; border-radius: 0.625rem; font-weight: 600; font-size: 0.9375rem; cursor: pointer; transition: all 0.2s;"
-                onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1)'"
-                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
-                onclick="alert('Item added to cart! Continue shopping or proceed to checkout.')">
+        <button class="modal-add-to-cart" onclick="alert('Item added to cart!')">
             Add to Cart - $${price}
         </button>
     `;
@@ -878,21 +881,83 @@ setInterval(() => {
     }
 }, 30000);
 
-// Add CSS animation for typing indicator
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes typing {
-        0%, 60%, 100% {
-            transform: translateY(0);
-            opacity: 1;
+// ============================================================================
+// Trending Products
+// ============================================================================
+
+async function loadTrendingProducts() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/trending?limit=6`);
+
+        if (!response.ok) {
+            console.warn('Could not load trending products');
+            return;
         }
-        30% {
-            transform: translateY(-8px);
-            opacity: 0.7;
+
+        const data = await response.json();
+
+        if (data.items && data.items.length > 0) {
+            displayTrendingProducts(data.items);
         }
+    } catch (error) {
+        console.warn('Trending products unavailable:', error.message);
     }
-`;
-document.head.appendChild(style);
+}
+
+function displayTrendingProducts(items) {
+    const trendingGrid = document.getElementById('trendingGrid');
+    const trendingItems = document.getElementById('trendingItems');
+
+    if (!trendingGrid || !trendingItems) return;
+
+    // Clear placeholder content
+    trendingItems.innerHTML = '';
+
+    // Add real trending products
+    items.forEach((item, index) => {
+        const card = createTrendingCard(item, index);
+        trendingItems.appendChild(card);
+    });
+
+    // Remove the placeholder message
+    const placeholderMsg = trendingGrid.querySelector('p');
+    if (placeholderMsg) {
+        placeholderMsg.remove();
+    }
+}
+
+function createTrendingCard(item, index) {
+    const card = document.createElement('div');
+    card.className = 'product-card trending-placeholder';
+    card.style.setProperty('--card-index', index);
+
+    const price = item.price || 65;
+    const imageUrl = item.imageUrl || `https://raw.githubusercontent.com/alexeygrigorev/clothing-dataset-small/master/images/${item.id}.jpg`;
+
+    card.innerHTML = `
+        <div class="product-image-container">
+            <img src="${imageUrl}"
+                 alt="${escapeHtml(item.productDisplayName)}"
+                 class="product-image"
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23f5f5f5%22 width=%2280%22 height=%2280%22/><text x=%2240%22 y=%2245%22 font-size=%228%22 text-anchor=%22middle%22 fill=%22%23bdbdbd%22>No image</text></svg>'"
+                 loading="lazy">
+            <div class="product-actions">
+                <button class="add-to-bag-btn" onclick="event.stopPropagation(); alert('Added to bag!')">Add to Bag</button>
+            </div>
+        </div>
+        <div class="product-details">
+            <h4 class="product-name">${escapeHtml(item.productDisplayName)}</h4>
+            <div class="product-meta">
+                <span class="product-price">$${price}</span>
+                <span class="product-category">${escapeHtml(item.articleType)}</span>
+            </div>
+        </div>
+    `;
+
+    card.addEventListener('click', () => showProductModal(item, price, imageUrl));
+
+    return card;
+}
 
 console.log('✅ Application ready');
 console.log('💡 Features: Live microphone recording, real product images, RAG search');

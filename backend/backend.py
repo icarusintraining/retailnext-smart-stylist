@@ -2,15 +2,15 @@
 RetailNext Smart Stylist Backend
 =================================
 A comprehensive AI-powered fashion assistant demonstrating OpenAI's latest APIs:
-- GPT-5 (Vision + Chat + Reasoning)
-- gpt-4o-transcribe (Speech-to-Text)
+- GPT-4.1-mini (Vision + Chat + Tool Calling) - 84% cheaper, 62% faster than GPT-4o
+- gpt-4o-mini-transcribe (Speech-to-Text) - 50% cheaper than gpt-4o-transcribe
 - gpt-4o-mini-tts (Text-to-Speech with Australian accent)
 - text-embedding-3-large (Semantic Search/RAG)
 - Structured Outputs (JSON Schema)
 - Function Calling (Tool Use)
 
 Author: OpenAI Solutions Engineer Candidate
-Date: December 2025
+Date: January 2026
 """
 
 import os
@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 # ============================================================================
 
 # Model Configuration - Using latest OpenAI models (December 2025)
-GPT_MODEL = os.getenv("OPENAI_GPT_MODEL", "gpt-4o")  # GPT-4o supports Structured Outputs & vision
-TRANSCRIPTION_MODEL = os.getenv("OPENAI_TRANSCRIBE_MODEL", "gpt-4o-transcribe")  # Better than Whisper
+GPT_MODEL = os.getenv("OPENAI_GPT_MODEL", "gpt-4.1-mini")  # 84% cheaper, 62% faster, better tool calling than gpt-4o
+TRANSCRIPTION_MODEL = os.getenv("OPENAI_TRANSCRIBE_MODEL", "gpt-4o-mini-transcribe")  # 50% cheaper than gpt-4o-transcribe
 TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "gpt-4o-mini-tts")  # Steerable TTS
 EMBEDDING_MODEL = os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-large")
 
